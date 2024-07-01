@@ -13,14 +13,15 @@ import net.ezra.ui.about.AboutScreen
 import net.ezra.ui.auth.LoginScreen
 import net.ezra.ui.auth.SignUpScreen
 import net.ezra.ui.dashboard.DashboardScreen
+import net.ezra.ui.events.Calender
+import net.ezra.ui.events.DetailsScreen
+import net.ezra.ui.events.LiveEventScreen
 //import net.ezra.ui.auth.SignupScreen
 import net.ezra.ui.home.HomeScreen
-import net.ezra.ui.products.AddProductScreen
-import net.ezra.ui.products.ProductDetailScreen
-import net.ezra.ui.products.ProductListScreen
-import net.ezra.ui.students.AddStudents
-import net.ezra.ui.students.Search
-import net.ezra.ui.students.Students
+import net.ezra.ui.newevents.AddEventScreen
+//import net.ezra.ui.products.ProductDetailScreen
+//import net.ezra.ui.products.ProductListScreen
+
 
 @Composable
 fun AppNavHost(
@@ -52,22 +53,15 @@ fun AppNavHost(
             AboutScreen(navController)
         }
 
-
-        composable(ROUTE_ADD_STUDENTS) {
-            AddStudents(navController)
-        }
-
         composable(ROUTE_SPLASH) {
             SplashScreen(navController)
         }
 
-        composable(ROUTE_VIEW_STUDENTS) {
-           Students(navController = navController, viewModel = viewModel() )
-        }
 
-        composable(ROUTE_SEARCH) {
-            Search(navController)
-        }
+
+//        composable(ROUTE_SEARCH) {
+//            Search(navController)
+//        }
 
         composable(ROUTE_DASHBOARD) {
             DashboardScreen(navController)
@@ -83,20 +77,32 @@ fun AppNavHost(
             LoginScreen(navController = navController){}
         }
 
-        composable(ROUTE_ADD_PRODUCT) {
-            AddProductScreen(navController = navController){}
+
+        composable(ROUTE_EVENTS) {
+            Calender(navController = navController)
         }
 
-        composable(ROUTE_VIEW_PROD) {
-            ProductListScreen(navController = navController, products = listOf() )
+        composable(ROUTE_EVENTS) {
+            DetailsScreen(navController = navController)
+        }
+
+        composable(ROUTE_EVENTS) {
+            LiveEventScreen(navController = navController)
+        }
+
+        composable(ROUTE_NEWEVENTS) {
+            AddEventScreen(navController = navController) {}
         }
 
 
 
-        composable("productDetail/{productId}") { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("productId") ?: ""
-            ProductDetailScreen(navController, productId)
-        }
+
+
+
+
+
+
+
 
 
 

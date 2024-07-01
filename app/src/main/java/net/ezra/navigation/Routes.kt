@@ -12,6 +12,9 @@ const val ROUTE_REGISTER = "register"
 const val ROUTE_DASHBOARD = "dashboard"
 const val ROUTE_ADD_PRODUCT = "add_product"
 const val ROUTE_VIEW_PROD = "view_prod"
+const val ROUTE_EVENTS = "events to take place"
+const val ROUTE_NEWEVENTS = "adding new events"
+
 
 
 

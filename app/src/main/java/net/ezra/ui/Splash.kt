@@ -52,12 +52,12 @@ fun SplashScreen(navController: NavHostController) {
         horizontalAlignment = Alignment.CenterHorizontally
     ){
 
-        Image(painter = painterResource(id = R.drawable.logo),
+        Image(painter = painterResource(id = R.drawable.logoi),
             contentDescription = "Logo",
             modifier = Modifier.scale(scale.value)
         )
 
-        Text("Apen Softwares")
+        Text("Connectify Events")
 
 
 
