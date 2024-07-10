@@ -50,11 +50,12 @@ import androidx.navigation.compose.rememberNavController
 import net.ezra.R
 import net.ezra.navigation.ROUTE_ABOUT
 import net.ezra.navigation.ROUTE_DASHBOARD
+import net.ezra.navigation.ROUTE_EVEDETAIL
 import net.ezra.navigation.ROUTE_EVENTS
 
 import net.ezra.navigation.ROUTE_HOME
 import net.ezra.navigation.ROUTE_LOGIN
-import net.ezra.navigation.ROUTE_VIEW_PROD
+//import net.ezra.navigation.ROUTE_VIEW_PROD
 
 @OptIn(ExperimentalMaterial3Api::class)
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -342,7 +343,7 @@ fun Calender(navController: NavController) {
 
                                         androidx.compose.material3.Button(
                                             onClick = {
-
+                                                navController.navigate(ROUTE_EVEDETAIL)
 
                                             },
                                             colors = ButtonDefaults.buttonColors(Color(color = 0xffe56a08)),
@@ -539,7 +540,7 @@ fun Calender(navController: NavController) {
 
                                         androidx.compose.material3.Button(
                                             onClick = {
-                                                // home.startActivity(Intent(home,CaleMenuActivity::class.java))
+                                                navController.navigate(ROUTE_EVEDETAIL)
 
                                             },
                                             colors = ButtonDefaults.buttonColors(Color(color = 0xffe56a08)),
@@ -733,7 +734,7 @@ fun Calender(navController: NavController) {
 
                                         androidx.compose.material3.Button(
                                             onClick = {
-                                                // home.startActivity(Intent(home,CaleMenuActivity::class.java))
+                                                navController.navigate(ROUTE_EVEDETAIL)
 
                                             },
                                             colors = ButtonDefaults.buttonColors(Color(color = 0xffe56a08)),
@@ -929,7 +930,7 @@ fun Calender(navController: NavController) {
 
                                         androidx.compose.material3.Button(
                                             onClick = {
-                                                // home.startActivity(Intent(home,CaleMenuActivity::class.java))
+                                                navController.navigate(ROUTE_EVEDETAIL)
 
                                             },
                                             colors = ButtonDefaults.buttonColors(

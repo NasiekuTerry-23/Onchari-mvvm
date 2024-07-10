@@ -67,6 +67,7 @@ import com.google.firebase.firestore.firestore
 import net.ezra.R
 import net.ezra.navigation.ROUTE_ADD_STUDENTS
 import net.ezra.navigation.ROUTE_DASHBOARD
+import net.ezra.navigation.ROUTE_EVEDETAIL
 import net.ezra.navigation.ROUTE_EVENTS
 import net.ezra.navigation.ROUTE_HOME
 import net.ezra.navigation.ROUTE_NEWEVENTS
@@ -594,9 +595,7 @@ fun DashboardScreen(navController: NavHostController)  {
                                 androidx.compose.material3.Button(
 
                                     onClick = {
-                                        navController.navigate(ROUTE_EVENTS) {
-                                            popUpTo(ROUTE_EVENTS) { inclusive = true }
-                                        }
+                                        navController.navigate(ROUTE_EVEDETAIL)
 
 
                                     },
@@ -799,7 +798,7 @@ fun DashboardScreen(navController: NavHostController)  {
 
                                 androidx.compose.material3.Button(
                                     onClick = {
-                                        // home.startActivity(Intent(home,CalenderActivity::class.java))
+                                        navController.navigate(ROUTE_EVEDETAIL)
 
                                     },
                                     colors = ButtonDefaults.buttonColors(Color(color = 0xffe56a08)),

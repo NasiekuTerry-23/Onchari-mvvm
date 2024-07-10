@@ -3,7 +3,6 @@ package net.ezra.navigation
 import androidx.activity.compose.BackHandler
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -16,11 +15,10 @@ import net.ezra.ui.dashboard.DashboardScreen
 import net.ezra.ui.events.Calender
 import net.ezra.ui.events.DetailsScreen
 import net.ezra.ui.events.LiveEventScreen
-//import net.ezra.ui.auth.SignupScreen
 import net.ezra.ui.home.HomeScreen
 import net.ezra.ui.newevents.AddEventScreen
-//import net.ezra.ui.products.ProductDetailScreen
-//import net.ezra.ui.products.ProductListScreen
+import net.ezra.ui.newevents.ProductListScreen
+import net.ezra.ui.newevents.ProductDetailScreen
 
 
 @Composable
@@ -82,17 +80,28 @@ fun AppNavHost(
             Calender(navController = navController)
         }
 
-        composable(ROUTE_EVENTS) {
+        composable(ROUTE_EVEDETAIL) {
             DetailsScreen(navController = navController)
         }
 
-        composable(ROUTE_EVENTS) {
+        composable(ROUTE_EVELIVE) {
             LiveEventScreen(navController = navController)
         }
+
 
         composable(ROUTE_NEWEVENTS) {
             AddEventScreen(navController = navController) {}
         }
+
+        composable(ROUTE_VIEWEVE) {
+            ProductListScreen(navController = navController, products = listOf())
+        }
+
+        composable("productDetail/{productId}") { backStackEntry ->
+            val productId = backStackEntry.arguments?.getString("productId") ?: ""
+            ProductDetailScreen(navController, productId)
+        }
+
 
 
 

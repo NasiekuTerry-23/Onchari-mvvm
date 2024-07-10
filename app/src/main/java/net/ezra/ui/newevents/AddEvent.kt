@@ -2,48 +2,40 @@ package net.ezra.ui.newevents
 
 import android.annotation.SuppressLint
 import android.net.Uri
-import android.widget.Space
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.*
 import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import kotlinx.coroutines.tasks.await
-import net.ezra.navigation.ROUTE_ADD_PRODUCT
+import net.ezra.navigation.ROUTE_DASHBOARD
+import net.ezra.navigation.ROUTE_EVELIVE
 import net.ezra.navigation.ROUTE_HOME
-import net.ezra.navigation.ROUTE_VIEW_PROD
-import net.ezra.navigation.ROUTE_EVENTS
+//import net.ezra.navigation.ROUTE_VIEW_PROD
+import net.ezra.navigation.ROUTE_NEWEVENTS
+import net.ezra.navigation.ROUTE_VIEWEVE
 
 
 
@@ -55,11 +47,17 @@ import java.util.*
 fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
     var contentHeadline by remember { mutableStateOf("") }
     var contentDescription by remember { mutableStateOf("") }
+    var eventDate by remember { mutableStateOf("") }
+    var eventPrice by remember { mutableStateOf("") }
+    var eventLocation by remember { mutableStateOf("") }
     var eventImageUri by remember { mutableStateOf<Uri?>(null) }
 
     // Track if fields are empty
     var contentHeadlineError by remember { mutableStateOf(false) }
     var contentDescriptionError by remember { mutableStateOf(false) }
+    var eventDateError by remember { mutableStateOf(false) }
+    var eventPriceError by remember { mutableStateOf(false) }
+    var eventLocationError by remember { mutableStateOf(false) }
     var eventImageError by remember { mutableStateOf(false) }
 
     val launcher = rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri: Uri? ->
@@ -80,7 +78,7 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                 },
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(ROUTE_VIEW_PROD)
+                        navController.navigate(ROUTE_DASHBOARD)
                     }) {
                         Icon(
                             Icons.Filled.KeyboardArrowLeft, "homeIcon",
@@ -101,32 +99,28 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(Color(0xFFF677572)),
+                    .background(
+                        brush = Brush.verticalGradient(
+                            colors = listOf(
+                                Color(0xFFF677572),
+                                Color(0xFFff9448)
+                            ), // Black to Orange
+                            startY = 0f,
+                            endY = Float.POSITIVE_INFINITY
+                        )
+                    ),
             ) {
                 item {
-                    Spacer(
-                        modifier = Modifier
-                            .height(50.dp)
-                    )
-                    androidx.compose.material3.Card(
-                        colors = CardDefaults.cardColors(Color(color = 0xff2D2D2A)),
-                        shape = RoundedCornerShape(20.dp),
-                        modifier = Modifier
-                            .height(1500.dp)
-                            .fillMaxWidth()
-
-
-                    ) {
 
                         Row (
                             verticalAlignment = Alignment.CenterVertically,
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier
-                                .padding(40.dp),
+                                .padding(start = 40.dp),
                         ) {
                             Spacer(
                                 modifier = Modifier
-                                    .height(50.dp)
+                                    .height(30.dp)
                             )
 
                             Text(
@@ -137,6 +131,10 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                                 modifier = Modifier
                                     .padding(start = 100.dp)
                                 //textAlign = Alignment.Center
+                            )
+                            Spacer(
+                                modifier = Modifier
+                                    .height(90.dp)
                             )
 
                         }
@@ -167,7 +165,7 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                                     .height(250.dp),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text("No Image Selected",
+                                Text("No Posters Selected",
                                     modifier = Modifier
                                         .padding(8.dp),
                                     color = Color.White,
@@ -187,12 +185,12 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                             colors = ButtonDefaults.buttonColors(Color(color = 0xffe56a08)),
                             shape = RoundedCornerShape(30.dp),
                             modifier = Modifier
-                                //.padding(start = 100.dp)
-                                .align(Alignment.CenterHorizontally)
+                                .padding(start = 100.dp)
+                                //.align(Alignment.CenterHorizontally)
                         ) {
                             Text(
-                                "Select Image",
-                                color = Color.White,
+                                "Select Poster",
+                                color = Color.Black,
                                 fontSize = 20.sp,
                                 fontWeight = FontWeight.SemiBold
                             )
@@ -201,35 +199,82 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                             modifier = Modifier
                                 .height(20.dp)
                         )
-                        TextField(
+                        OutlinedTextField(
                             value = contentHeadline,
                             onValueChange = { contentHeadline = it },
 
                             label = { Text(
                                 "Content Headline",
-                                color = Color.LightGray
+                                color = Color.White
                             ) },
                             modifier = Modifier.fillMaxWidth(),
+                                    shape = RoundedCornerShape(10.dp),
 
                             )
                         Spacer(
                             modifier = Modifier
                                 .height(20.dp)
                         )
-                        TextField(
+                        OutlinedTextField(
                             value = contentDescription,
                             onValueChange = { contentDescription = it },
                             label = { Text(
                                 "Content Description",
-                                color = Color.LightGray
+//                                focusedContainerColor = Color.LightGray,
+//                                unfocusedContainerColor = Color.LightGray,
+                                color = Color.White
                             ) },
                             modifier = Modifier.fillMaxWidth(),
+                            shape = RoundedCornerShape(10.dp),
                         )
                         Spacer(
                             modifier = Modifier
                                 .height(20.dp)
                         )
+                    OutlinedTextField(
+                        value = eventDate,
+                        onValueChange = { eventDate = it },
 
+                        label = { Text(
+                            "Event Date",
+                            color = Color.White
+                        ) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp),
+
+                        )
+                    Spacer(
+                        modifier = Modifier
+                            .height(20.dp)
+                    )
+                    OutlinedTextField(
+                        value = eventLocation,
+                        onValueChange = { eventLocation = it },
+
+                        label = { Text(
+                            "Event Location",
+                            color = Color.White
+                        ) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp),
+
+                        )
+                    Spacer(
+                        modifier = Modifier
+                            .height(20.dp)
+                    )
+                    OutlinedTextField(
+                        value = eventPrice,
+                        onValueChange = { eventPrice = it },
+
+                        label = { Text(
+                            "Event Price",
+                            color = Color.White
+                        ) },
+                        modifier = Modifier.fillMaxWidth(),
+                        shape = RoundedCornerShape(10.dp),
+
+                        )
 
                         if (contentHeadlineError) {
                             Text("Content Headline is required", color = Color.Red)
@@ -237,6 +282,15 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                         if (contentDescriptionError) {
                             Text("Content Description is required", color = Color.Red)
                         }
+                    if (eventLocationError) {
+                        Text("Event Location is required", color = Color.Red)
+                    }
+                    if (eventDateError) {
+                        Text("Date of the Event is required", color = Color.Red)
+                    }
+                    if (eventPriceError) {
+                        Text("Event Price is required", color = Color.Red)
+                    }
                         if (eventImageError) {
                             Text("Event Image is required", color = Color.Red)
                         }
@@ -265,18 +319,25 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
 
                             androidx.compose.material3.Button(
                                 onClick = {
+
                                     // Reset error flags
                                     contentHeadlineError = contentHeadline.isBlank()
                                     contentDescriptionError = contentDescription.isBlank()
+                                    eventLocationError = eventLocation.isBlank()
+                                    eventDateError = eventLocation.isBlank()
+                                    eventPriceError = eventLocation.isBlank()
                                     eventImageError = eventImageUri == null
 
                                     // Add product if all fields are filled
-                                    if (!contentHeadlineError && !contentDescriptionError && !eventImageError) {
+                                    if (!contentHeadlineError && !contentDescriptionError && !eventLocationError && !eventDateError && !eventPriceError && !eventImageError) {
                                         addEventToFirestore(
                                             navController,
                                             onEventAdded,
                                             contentHeadline,
                                             contentDescription,
+                                            eventDate,
+                                            eventLocation,
+                                            eventPrice,
                                             eventImageUri
                                         )
                                     }
@@ -298,7 +359,7 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                             )
 
                             androidx.compose.material3.Button(onClick = {
-                                launcher.launch("image/*")
+                                navController.navigate(ROUTE_VIEWEVE)
                             },
                                 colors = ButtonDefaults.buttonColors(Color.Gray),
 
@@ -335,8 +396,8 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                             )
 
                             androidx.compose.material3.Button(onClick = {
-                                navController.navigate(ROUTE_EVENTS) {
-                                    popUpTo(ROUTE_EVENTS) { inclusive = true }
+                                navController.navigate(ROUTE_EVELIVE) {
+                                    popUpTo(ROUTE_NEWEVENTS) { inclusive = true }
                                 }
                             },
                                 colors = ButtonDefaults.buttonColors(Color.Gray),
@@ -350,14 +411,22 @@ fun AddEventScreen(navController: NavController, onEventAdded: () -> Unit) {
                             }
                         }
                     }
-                }
             }
         }
     )
 }
 
-private fun addEventToFirestore(navController: NavController, onEventAdded: () -> Unit, contentHeadline: String, contentDescription: String, eventImageUri: Uri?) {
-    if (contentHeadline.isEmpty() || contentDescription.isEmpty() || eventImageUri == null) {
+private fun addEventToFirestore(
+    navController: NavController,
+    onEventAdded: () -> Unit,
+    contentHeadline: String,
+    contentDescription: String,
+    eventLocation: String,
+    eventDate: String,
+    eventPrice: String,
+    eventImageUri: Uri?
+) {
+    if (contentHeadline.isEmpty() || contentDescription.isEmpty() || eventLocation.isEmpty() || eventDate.isEmpty() || eventPrice.isEmpty()|| eventImageUri == null) {
         // Validate input fields
         return
     }
@@ -368,6 +437,9 @@ private fun addEventToFirestore(navController: NavController, onEventAdded: () -
     val eventData = hashMapOf(
         "name" to contentHeadline,
         "description" to contentDescription,
+        "location" to eventLocation,
+        "date" to eventDate,
+        "price" to eventPrice,
         "imageUrl" to ""
     )
 
@@ -386,7 +458,7 @@ private fun addEventToFirestore(navController: NavController, onEventAdded: () -
                         ).show()
 
                         // Navigate to another screen
-                        navController.navigate(ROUTE_HOME)
+                        navController.navigate(ROUTE_VIEWEVE)
 
                         // Invoke the onProductAdded callback
                         onEventAdded()

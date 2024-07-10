@@ -33,6 +33,7 @@ import net.ezra.R
 import net.ezra.navigation.ROUTE_ABOUT
 import net.ezra.navigation.ROUTE_HOME
 import net.ezra.navigation.ROUTE_EVENTS
+import net.ezra.navigation.ROUTE_VIEWEVE
 
 @Composable
 fun LiveEventScreen(navController: NavHostController) {
@@ -199,7 +200,11 @@ fun LiveEventScreen(navController: NavHostController) {
                     Icon(
                         painter = painterResource(id = R.drawable.play),
                         contentDescription = "Play",
-                        tint = Color.Black
+                        tint = Color.Black,
+                        modifier = Modifier
+                            .clickable {
+                                navController.navigate(ROUTE_VIEWEVE)
+                            }
                     )
                 }
 

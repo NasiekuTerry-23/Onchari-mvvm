@@ -65,7 +65,8 @@ import net.ezra.navigation.ROUTE_DASHBOARD
 import net.ezra.navigation.ROUTE_HOME
 import net.ezra.navigation.ROUTE_LOGIN
 import net.ezra.navigation.ROUTE_SEARCH
-import net.ezra.navigation.ROUTE_VIEW_PROD
+import net.ezra.navigation.ROUTE_VIEWEVE
+//import net.ezra.navigation.ROUTE_VIEW_PROD
 import net.ezra.navigation.ROUTE_VIEW_STUDENTS
 
 
@@ -155,6 +156,7 @@ fun HomeScreen(navController: NavHostController) {
                         .fillMaxWidth()
 
                 )
+
                 androidx.compose.material3.Text(
                     text = "  Together",
                     color = Color.White,

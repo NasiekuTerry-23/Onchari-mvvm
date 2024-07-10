@@ -59,6 +59,7 @@ import net.ezra.navigation.ROUTE_ABOUT
 
 import net.ezra.navigation.ROUTE_EVENTS
 import net.ezra.navigation.ROUTE_DASHBOARD
+import net.ezra.navigation.ROUTE_VIEWEVE
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -84,7 +85,7 @@ fun DetailsScreen(navController: NavHostController){
                 ),
                 navigationIcon = {
                     IconButton(onClick = {
-                        navController.navigate(ROUTE_DASHBOARD)
+                        navController.navigate(ROUTE_VIEWEVE)
                     }) {
                         androidx.compose.material.Icon(
                             Icons.Filled.KeyboardArrowLeft, "homeIcon",
@@ -356,7 +357,8 @@ fun DetailsScreen(navController: NavHostController){
                                 .height(30.dp)
                         )
                         Button(
-                            onClick = { /* Handle book ticket */ },
+                            onClick = {
+                                navController.navigate(ROUTE_VIEWEVE) },
                             colors = ButtonDefaults.buttonColors(containerColor = Color(0xffe56a08)),
                             modifier = Modifier
                                 .align(Alignment.CenterHorizontally),
